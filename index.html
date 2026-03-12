@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>الجزائر | المحرك السيادي - النظام الأكاديمي</title>
+    <style>
+        /* ========== الأنماط البصرية السيادية ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #050505;
+            --card-bg: #111111;
+            --accent: #c9a227;
+            --text-main: #ffffff;
+            --text-muted: #8a9199;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --modal-bg: #0a0a0a;
+            --glow: rgba(201, 162, 39, 0.2);
+            --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --danger: #ff003c;
+        }
+
+        body.light-mode {
+            --bg-main: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-main: #121212;
+            --text-muted: #5a6169;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --modal-bg: #fafbfc;
+            --glow: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, system-ui, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        .main-header {
+            max-width: 1200px;
+            margin: 20px auto 30px;
+            padding: 15px 25px;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 40px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .nav-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(201, 162, 39, 0.05);
+        }
+        .nav-link.active {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .screen {
+            display: none;
+            min-height: calc(100vh - 120px);
+            padding: 20px 20px 80px;
+            box-sizing: border-box;
+        }
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الصفحة الرئيسية */
+        .hero-section {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--glow);
+        }
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin: 20px 0 40px;
+        }
+
+        /* صفحة المفهوم */
+        .concept-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 50px;
+        }
+        .concept-title {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .concept-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--text-main);
+        }
+
+        /* شاشة التشخيص */
+        #quiz-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .diagnostic-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 60px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        }
+        .progress-bar {
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+        #progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px var(--accent);
+        }
+        .q-meta {
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+        .q-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            line-height: 1.6;
+            min-height: 110px;
+            color: var(--text-main);
+        }
+        .options-matrix {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+        }
+        .matrix-option {
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            width: 70px;
+            height: 70px;
+            font-size: 1.4rem;
+        }
+        .matrix-option:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .option-label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-top: 35px;
+            text-transform: uppercase;
+        }
+
+        /* شاشة المحرك (OS) */
+        .os-header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 25px;
+        }
+        .os-branding h1 {
+            font-size: 4rem;
+            color: var(--accent);
+            margin: 0;
+            letter-spacing: -2px;
+            text-shadow: 0 0 25px var(--glow);
+            line-height: 1;
+        }
+        .os-branding p {
+            margin: 10px 0 0;
+            color: var(--text-main);
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 1rem;
+        }
+        .os-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .stream-selector {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+            transition: 0.3s;
+        }
+        .stream-selector:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--glow);
+        }
+        .control-btn {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        .control-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* شبكة الكروت */
+        .sovereign-grid {
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        .grid-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .grid-card.animate {
+            animation: popIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+        @keyframes popIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .grid-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 20px var(--glow);
+            z-index: 10;
+        }
+        .grid-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 0;
+            background: var(--accent);
+            transition: 0.4s ease;
+        }
+        .grid-card:hover::before {
+            height: 100%;
+            box-shadow: 0 0 15px var(--accent);
+        }
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+        .grid-card:hover .card-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        .card-tag {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            letter-spacing: 2px;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin: 0 0 10px;
+            color: var(--text-main);
+        }
+        .card-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .span-2 { grid-column: span 2; }
+        .span-4 { grid-column: span 4; }
+
+        /* البروتوكول الأكاديمي */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .subject-item {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .subject-item:hover {
+            border-color: var(--accent);
+            background: var(--card-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px var(--glow);
+        }
+        .subject-item h4 {
+            color: var(--accent);
+            margin: 0 0 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 900;
+        }
+        .subject-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        /* شريط التنقل السفلي (دوك) */
+        .explorer-dock {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(25px);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+        }
+        .light-mode .explorer-dock {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .dock-button {
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-muted);
+            border: none;
+            background: transparent;
+            transition: 0.3s;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+        }
+        .dock-button:hover {
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+        .dock-button.active {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* النافذة المنبثقة */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            transition: 0.4s ease;
+        }
+        .light-mode .modal {
+            background: rgba(255,255,255,0.95);
+        }
+        .modal.show {
+            opacity: 1;
+            display: flex;
+        }
+        .modal-content {
+            background: var(--modal-bg);
+            border: 1px solid var(--accent);
+            border-radius: 25px;
+            max-width: 850px;
+            width: 90%;
+            padding: 50px;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: scale(0.95) translateY(30px);
+            transition: 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            position: relative;
+        }
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            font-size: 2.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: 0.3s;
+        }
+        .close-btn:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        #modal-title {
+            color: var(--accent);
+            font-size: 2.2rem;
+            font-weight: 900;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin: 0 0 25px 0;
+        }
+        #modal-body {
+            line-height: 2;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        .action-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        .action-btn:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        #inconsistency-alert {
+            display: none;
+            background: rgba(255, 0, 60, 0.05);
+            color: var(--danger);
+            text-align: center;
+            margin: -20px auto 40px;
+            max-width: 800px;
+            font-weight: 900;
+            border: 1px solid var(--danger);
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 900px) {
+            .sovereign-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .span-4 { grid-column: span 2; }
+            .os-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .explorer-dock {
+                width: 90%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                border-radius: 15px;
+            }
+            .modal-content {
+                padding: 35px 20px;
+            }
+            .options-matrix {
+                gap: 10px;
+            }
+            .matrix-option {
+                width: 55px;
+                height: 55px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر العلوي الثابت -->
+    <div class="main-header">
+        <div class="logo">المحرك السيادي</div>
+        <div class="nav-links">
+            <span class="nav-link" onclick="showScreen('home-screen')">الرئيسية</span>
+            <span class="nav-link" onclick="startDiagnostic()">الاختبار التشخيصي</span>
+            <span class="nav-link" onclick="showConcept()">مفهوم المحركات</span>
+            <span class="nav-link" onclick="showAllEngines()">التصفح الحر</span>
+            <span class="nav-link" onclick="toggleTheme()">🌓</span>
+        </div>
+    </div>
+
+    <!-- شاشة الرئيسية -->
+    <div id="home-screen" class="screen active">
+        <div class="hero-section">
+            <h1 class="hero-title">اكتشف محركك الدراسي</h1>
+            <p class="hero-subtitle">نظام تحليل الشخصية الأكاديمية لطلاب البكالوريا</p>
+            <div style="margin-top: 40px;">
+                <button class="btn-sov" onclick="startDiagnostic()">ابدأ الاختبار</button>
+                <button class="btn-sov secondary" onclick="showAllEngines()">تصفح جميع المحركات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة المفهوم -->
+    <div id="concept-screen" class="screen">
+        <div class="concept-container">
+            <h2 class="concept-title">ما هي المحركات الدراسية؟</h2>
+            <div class="concept-text">
+                <p>المحركات الدراسية هي أنماط شخصية أكاديمية تعكس طريقة تفكيرك وتعلمك واستعدادك للامتحانات. بناءً على تحليل نفسي تربوي، قمنا بتطوير 8 محركات أساسية تمثل الطرق المختلفة التي يواجه بها الطالب تحديات البكالوريا.</p>
+                <p style="margin-top: 20px;">كل محرك يجمع بين ثلاثة أبعاد رئيسية:</p>
+                <ul style="margin-right: 30px; margin-top: 15px;">
+                    <li><strong style="color: var(--accent);">البعد المعرفي (I/E)</strong>: هل تعتمد على فهمك الذاتي أم على المصادر الخارجية؟</li>
+                    <li><strong style="color: var(--accent);">البعد المنهجي (T/S)</strong>: هل تميل إلى المنطق التجريدي أم إلى القيم الإنسانية؟</li>
+                    <li><strong style="color: var(--accent);">البعد الزمني (L/P)</strong>: هل تفضل التخطيط طويل المدى أم العمل تحت الضغط؟</li>
+                </ul>
+                <p style="margin-top: 20px;">من خلال الإجابة على 24 سؤالاً، ستكتشف محركك الدراسي الفريد وستحصل على خطة مخصصة حسب شعبتك لتحقيق أفضل النتائج في البكالوريا.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة التشخيص -->
+    <div id="quiz-screen" class="screen">
+        <div class="diagnostic-container">
+            <div class="progress-bar"><div id="progress-fill"></div></div>
+            <div class="q-meta" id="question-dimension">POINT // 01 OF 24</div>
+            <div class="q-text" id="question-text">تهيئة المصفوفة المعرفية...</div>
+            <div class="options-matrix" id="options-container"></div>
+            <div class="option-label"><span>رفض قاطع</span><span>موافقة تامة</span></div>
+        </div>
+    </div>
+
+    <!-- شاشة المحرك (OS) -->
+    <div id="os-screen" class="screen">
+        <div class="os-header">
+            <div class="os-branding">
+                <h1 id="engine-code">---</h1>
+                <p id="engine-name">SOVEREIGN ANALYSIS</p>
+            </div>
+            <div class="os-controls">
+                <select id="stream-selector" class="stream-selector" onchange="updateStreamStrategies()">
+                    <option value="science">علوم تجريبية + رياضيات</option>
+                    <option value="tech">تقني رياضي</option>
+                    <option value="eco">تسيير واقتصاد</option>
+                    <option value="lit">آداب وفلسفة</option>
+                    <option value="lang">لغات أجنبية</option>
+                </select>
+                <button class="control-btn" onclick="toggleTheme()" title="تبديل الوضع">🌓</button>
+            </div>
+        </div>
+
+        <div id="inconsistency-alert">⚠️ [تحذير]: تم رصد تناقض في الإجابات. قد يكون المحرك غير مستقر.</div>
+
+        <div class="sovereign-grid" id="main-grid"></div>
+
+        <div class="explorer-dock" id="explorer-dock" style="display: none;"></div>
+    </div>
+
+    <!-- النافذة المنبثقة -->
+    <div class="modal" id="info-modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+            <div class="modal-actions">
+                <button class="action-btn" onclick="copyModalContent()"><span>📋</span> نسخ النص</button>
+                <button class="action-btn" onclick="shareModalContent()"><span>📤</span> مشاركة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --------------------------------------------------------
+        // البيانات الموسعة - أسئلة التشخيص (24 سؤالاً)
+        // --------------------------------------------------------
+        const diagnosticQuestions = [
+            { text: "أفضل قضاء ساعات في فهم جذور النظرية الرياضية حتى لو كانت خارج المنهج", dim: "IE", weight: 2 },
+            { text: "الملخصات الجاهزة من الأستاذ تكفيني لأحصل على علامة ممتازة", dim: "IE", weight: -2 },
+            { text: "أشعر بالقلق إذا لم أتبع خطة الأستاذ حرفياً", dim: "IE", weight: -1.5 },
+            { text: "أستمتع باكتشاف الأخطاء في الكتب المدرسية", dim: "IE", weight: 2 },
+            { text: "الفهم العميق للدرس يغني عن حل 100 تمرين", dim: "IE", weight: 1.5 },
+            { text: "مقارنة علاماتي بعلامات المتفوقين تحفزني كثيراً", dim: "IE", weight: -1.5 },
+            { text: "الدراسة الجماعية تشتت تركيزي تماماً", dim: "IE", weight: 1.5 },
+            { text: "مديح الأهل والأصدقاء أهم من قناعتي الشخصية", dim: "IE", weight: -2 },
+            { text: "الخطأ الحسابي كارثة تستدعي إعادة التمرين بالكامل", dim: "TS", weight: 2 },
+            { text: "أدرس من أجل أهلي ومجتمعي أكثر مما أدرس لنفسي", dim: "TS", weight: -2 },
+            { text: "المواد العلمية تجذبني أكثر من الأدبية", dim: "TS", weight: 1.5 },
+            { text: "أهتم بمشاعر أصدقائي المتعثرين أكثر من شرح المادة", dim: "TS", weight: -1.5 },
+            { text: "النجاح معادلة رياضية: جهد + خطة = علامة", dim: "TS", weight: 2 },
+            { text: "حالتي النفسية تؤثر بشكل كبير على تركيزي", dim: "TS", weight: -1.5 },
+            { text: "كفاءة الأستاذ العلمية أهم من أسلوبه في التدريس", dim: "TS", weight: 1.5 },
+            { text: "أشعر بمسؤولية إصلاح المجتمع من خلال علمي", dim: "TS", weight: -2 },
+            { text: "جداولي الدراسية مقدسة ولا أتخلف عنها أبداً", dim: "LP", weight: 2 },
+            { text: "لا أبدع إلا تحت الضغط في اللحظات الأخيرة", dim: "LP", weight: -2 },
+            { text: "أقسم الدروس إلى مهام يومية صغيرة جداً", dim: "LP", weight: 1.5 },
+            { text: "أمل من الروتين وأحتاج للتغيير المستمر", dim: "LP", weight: -1.5 },
+            { text: "أراجع المنهج بالترتيب من أول صفحة لآخر صفحة", dim: "LP", weight: 2 },
+            { text: "أدرس حسب ما أميل إليه وليس حسب الجدول", dim: "LP", weight: -2 },
+            { text: "لا أبدأ قبل ترتيب مكتبي بشكل مثالي", dim: "LP", weight: 1.5 },
+            { text: "أفضل نوبات الدراسة المكثفة على الدراسة اليومية", dim: "LP", weight: -2 }
+        ];
+
+        // --------------------------------------------------------
+        // قاعدة بيانات المحركات (8 محركات) مع استراتيجيات موسعة
+        // --------------------------------------------------------
+        const engineDatabase = {
+            "ITL": { name: "المستقل السيادي", color: "#c9a227", icon: "🏛️",
+                core: `أنت لست طالباً عادياً. أنت كيان معرفي مستقل، ترفض التبعية الفكرية وتأنف من التلقين. في أعماقك، تدرك أن المعرفة الحقيقية لا تُمنح، بل تُغتصب من الواقع بالقوة والذكاء. دراستك للبكالوريا ليست مجرد اجتياز امتحان، بل هي معركة وجودية لإثبات أنك قادر على فهم العالم من جذوره. منذ طفولتك، كنت تسأل "لماذا" حتى في أبسط الأمور. هذا الفضول المعرفي هو وقودك النووي. أنت لا تحفظ القوانين، أنت تكتشفها. لا تتعلم النظريات، أنت تعيد اختراعها. في قسمك، قد يراك البعض متعجرفاً أو منعزلاً، لكن الحقيقة أنك ببساطة في مستوى فكري آخر. قوتك العظمى هي قدرتك على تفكيك أي نظام معقد إلى مكوناته الأولية. بينما ينشغل زملاؤك بحفظ الخطوات، أنت تبني في رأسك نموذجاً كاملاً للآلة. هذا يجعلك قادراً على حل أي تمرين، حتى لو لم ترَ مثله من قبل، لأنك تفهم المنطق الداخلي الذي يحركه.`,
+                logic: `عقلك يعمل كمعمل افتراضي دائم. عندما تقرأ نظرية في الفيزياء، عقلك يسأل فوراً: "لماذا بالضبط هذه العلاقة؟ ماذا لو تغير هذا المتغير؟ كيف أثبت ذلك بنفسي؟" أنت تمتلك قدرة خارقة على "الهندسة العكسية" للمفاهيم. أي فكرة تقدم لك، تقوم بتفكيكها إلى مسلماتها الأولى، ثم تعيد بناءها من الصفر للتأكد من فهمك الكامل لها. في الرياضيات، أنت لا تحفظ الخطوات الأربع لحل المعادلة التفاضلية، أنت تفهم لماذا هذه الطريقة تعمل، وما هي الفكرة الهندسية أو الفيزيائية التي تخلفها. هذه العقلية التحليلية تجعلك بطيئاً في البداية، لكنك تتسارع بشكل هائل بعد ذلك، لأنك تبني قاعدة صلبة لا تتزعزع. بينما ينهار زملاؤك إذا تغير نمط السؤال قليلاً، أنت تتكيف بسهولة لأنك تفهم المبادئ الأساسية.`,
+                environment: `بيئتك المثالية هي كهف أفلاطون. تحتاج إلى عزلة شبه مطلقة لتسمع صوت أفكارك. الضجيج الاجتماعي يشتت تردداتك الذهنية الدقيقة. أنت تعمل بكفاءة في: غرفة مغلقة مع إضاءة هادئة، مكتبة فارغة في ساعات متأخرة، أي مكان لا يسمع فيه صوت البشر. مكتبك هو لوحة تحكم سفينة فضاء. كل شيء في مكانه: الأقلام مرتبة حسب اللون، الكتب مصنفة حسب الموضوع، الأوراق مؤرشفة في ملفات. الفوضى المادية تترجم إلى فوضى ذهنية بالنسبة لك. أنت تدرس عادة مع سماعات عازلة للصوت، حتى لو كنت وحدك. هذا يخلق "فقاعة تركيز" تحميك من تدخلات العالم الخارجي. هاتفك يكون في وضع الطيران دائماً أثناء الدراسة. أنت لا ترد على أي مكالمة أو رسالة أثناء جلسات العمل العميق.`,
+                timing: `بروتوكولك الزمني هو "العمل العميق المكثف". أنت لا تؤمن بجلسات دراسة طويلة ومملة. جدولك المثالي هو: 4 ساعات صباحية: مواد أساسية تتطلب تحليلاً عميقاً (رياضيات، فيزياء)، استراحة تأمل، 3 ساعات مسائية: مواد تطبيقية مع حل تمارين معقدة. أنت ترفض تماماً مبدأ "المذاكرة المستمرة طوال اليوم". تعتقد أن 5 ساعات من التركيز المطلق أفضل من 12 ساعة من التشتت. لديك القدرة على الدخول في "حالة التدفق" بسرعة، حيث يختفي الزمن وتكون أنت والمادة وجهاً لوجه فقط. قبل الامتحان، لا تسهر أبداً. تفضل النوم المبكر والاستيقاظ في الفجر لمراجعة خفيفة. تعتقد أن العقل المصحصح هو أقوى سلاح في قاعة الامتحان.`,
+                danger: `مستنقع التفاصيل هو عدوك اللدود. قد تضيع يوماً كاملاً في البحث عن أصل نظرية تاريخية أو إثبات جانبي غير مهم. كماليتك المعرفية قد تتحول إلى دمارك. أنت معرض لخطر "شلل التحليل" حيث تنشغل ببناء النموذج المثالي ولا تبدأ أبداً في حل التمارين العملية. تتوه في متاهة "ماذا لو" و "لماذا" وتنسى أن الهدف الأساسي هو اجتياز الامتحان والحصول على علامة. خطر آخر هو "العزلة السامة". قد تصل لمرحلة تنسى فيها أن العالم الخارجي موجود، وأن التعاون مع الآخرين قد يكشف لك زوايا للمادة لم تكن لتراها وحدك. الحل هو التوازن: احتفظ بعزلتك الإنتاجية، لكن افتح نوافذ للتفاعل المحدود مع المتفوقين. قد تصاب أيضاً "بإحباط العباقرة" عندما تواجه فكرة لا تستوعبها بسرعة. تذكر أن حتى أعظم العقول تحتاج للوقت والصبر. لا تقسُ على نفسك كثيراً.`,
+                ethos: `المعرفة هي أعلى مراتب السيادة. من يمتلك الفهم العميق للعالم، يمتلك القرار. أنت لا تدرس للحصول على وظيفة، بل لبناء عقل حر غير قابل للاختراق. فلسفتك مبنية على مقولة الفارابي: "الغاية من التعليم هي بلوغ الكمال الإنساني". كل معلومة تفهمها بعمق هي لبنة في بناء عقلك السيادي. كل تمرين تحله بطريقة أصلية هو انتصار صغير في معركتك الكبرى نحو الاستقلال الفكري. أنت تؤمن بأن البكالوريا مجرد محطة، ليست النهاية. الأهم هو نوعية العقل الذي ستبنيه خلال هذه الرحلة. لهذا أنت لا تغش أبداً، لأن الغش يخدعك أنت قبل أن يخدع الآخرين.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية لشعبة العلوم التجريبية والرياضيات:
+• ركز على بناء النماذج الذهبية: لا تحفظ القوانين بل اشتقها بنفسك. مثلاً في الميكانيك، افهم لماذا العلاقة f=ma بهذا الشكل وليس غيره.
+• حل مواضيع بكالوريا من 2008 إلى 2024، وحلل كل سؤال: لماذا وُضع بهذه الصيغة؟ ما المهارة التي يقيسها؟
+• دوّن "أخطاء الذكاء" التي ترتكبها بسبب الثقة الزائدة (مثل نسيان وحدة القياس أو خطأ إشارة).
+
+📚 تطبيقات البكالوريا:
+• في الرياضيات: أنشئ خريطة علاقات بين الدوال والمشتقات والتكامل والاحتمالات. لاحظ أن 70% من الأسئلة تعتمد على الربط بين هذه المفاهيم.
+• في الفيزياء: تعامل مع كل تمرين كظاهرة طبيعية - اسأل نفسك "كيف يحدث هذا في الواقع؟" قبل البدء بالحل.
+• في العلوم الطبيعية: ادرس الكائن الحي كنظام متكامل (مثلاً: كيف يرتبط تركيب البروتين بوظيفته كإنزيم).
+
+💡 نصائح إضافية:
+• عند الإجابة في الامتحان، اكتب خطواتك كأنك تشرح لطالب مبتدئ. المصحح يبحث عن الفهم العميق.
+• استخدم القلم الرصاص في الرسمات التخطيطية لتعديلها بسهولة.`,
+                    tech: `✅ الاستراتيجية الأساسية لشعبة التقني الرياضي:
+• تعامل مع كل نظام هندسي (دارة كهربائية، آلة ميكانيكية) باعتباره لغزاً يجب تفكيكه. اسأل: ما وظيفة كل قطعة؟ ماذا يحدث إذا تعطلت؟
+• أتقن الرسم الهندسي اليدوي - تدرب على رسم المساقط الثلاثية والمقاطع حتى تصبح سريعاً ودقيقاً.
+
+📚 تطبيقات البكالوريا:
+• في دراسة التحضير الميكانيكي: حل 50 تمريناً على الأقل من مواضيع سابقة، وركز على تحليل القوى وتحديد ردود الأفعال.
+• في التمديدات الكهربائية: احفظ قانون أوم وقوانين كيرشوف كأنها اسمك، وطبّقها في دوائر معقدة.
+• في الرسم التقني: درب نفسك على تخيل القطعة ثلاثية الأبعاد من خلال المساقط.
+
+💡 نصائح إضافية:
+• البكالوريا التقنية تحب الدقة: نظم دفترك بوضوح، استخدم ألواناً للتمييز بين الخطوط المختلفة في الرسم.
+• المصحح سيعطيك نقاطاً على المنهجية، لذا اكتب كل خطوة حتى لو بدت بسيطة.`,
+                    eco: `✅ الاستراتيجية الأساسية لشعبة تسيير واقتصاد:
+• المحاسبة هي العمود الفقري: احفظ القيود المحاسبية الأساسية (الشراء، البيع، الإهتلاكات) وطبّقها في سياقات متنوعة.
+• في الاقتصاد: اربط النظريات بالواقع الجزائري - مثلاً كيف يؤثر ارتفاع أسعار النفط على الميزان التجاري؟
+
+📚 تطبيقات البكالوريا:
+• المحاسبة: حل 20 موضوع بكالوريا كامل في المحاسبة وحدها. ستلاحظ أن الأفكار تتكرر (الاهتلاكات، التنازل عن الأصول، التسويات الجردية).
+• الاقتصاد النظري: احفظ التعريفات الرسمية كما وردت في الكتاب، لأن المصحح يبحث عن الدقة.
+• القانون: ركز على العقود والشركات - افهم روح النص القانوني وليس فقط حروفه.
+
+💡 نصائح إضافية:
+• في الامتحان، ابدأ بالمحاسبة لأنها تحتاج تركيزاً عالياً، واترك الأسئلة النظرية للنهاية.
+• استخدم الآلة الحاسبة بذكاء - احفظ اختصارات لحساب النسب المئوية والإهتلاكات.`,
+                    lit: `✅ الاستراتيجية الأساسية لشعبة آداب وفلسفة:
+• الأدب: اقرأ النصوص الأصلية وتذوقها. أنشئ موسوعة أدبية تضم خصائص العصور (الجاهلي، الإسلامي، العباسي، الحديث) وأبرز الشعراء.
+• الفلسفة: تدرب على كتابة مقالات جدلية واستقصائية - احفظ أقوال الفلاسفة الرئيسية (ديكارت، كانط، ابن سينا).
+
+📚 تطبيقات البكالوريا:
+• في المقالة الأدبية: التزم بالهيكل الصارم - مقدمة (تمهيد + إشكالية + خطة)، عرض (2-3 أفكار مع شواهد)، خاتمة (تأكيد الرأي + استشراف).
+• البلاغة: حل أكبر عدد من التمارين القصيرة في الاستعارة والكناية والتشبيه.
+• النصوص: تدرب على تحليل نصوص غير مألوفة - اختر نصوصاً من خارج المقرر وحاول فهمها.
+
+💡 نصائح إضافية:
+• في الامتحان، خصص 10 دقائق لرسم مخطط للمقالة قبل البدء بالكتابة.
+• احفظ مجموعة من الشواهد الشعرية والنثرية (مثل المعلقات، شعر المتنبي) لتوظيفها في المقالات.`,
+                    lang: `✅ الاستراتيجية الأساسية لشعبة اللغات الأجنبية:
+• الممارسة اليومية هي المفتاح: خصص 30 دقيقة يومياً للاستماع (بودكاست، أغاني، أفلام) ونصف ساعة للقراءة (مقالات، قصص قصيرة).
+• أنشئ دفتراً للمفردات الجديدة مع جمل أمثلة، وراجعه أسبوعياً.
+
+📚 تطبيقات البكالوريا:
+• في فهم النص: تدرب على استخراج الأفكار الرئيسية والمفردات من السياق - لا توقف القراءة عند كل كلمة لا تعرفها.
+• في التعبير الكتابي: احفظ نماذج لمواضيع شائعة (البيئة، التكنولوجيا، السفر، التعليم) ودرّب نفسك على تعديلها.
+• القواعد: ركز على الأزمنة الأساسية (الماضي، الحاضر، المستقبل) وتركيب الجملة.
+
+💡 نصائح إضافية:
+• استخدم تطبيقات التبادل اللغوي (مثل HelloTalk) للتحدث مع ناطقين أصليين - هذا يحسن الطلاقة والنطق.
+• في الامتحان، ابدأ بالأسئلة السهلة (القواعد، الفهم) واترك التعبير للنهاية. اكتب بخط واضح واترك فراغات بين السطور للتعديل.`
+                } 
+            },
+            "ITP": { name: "المستبصر الحدسي", color: "#2a9d8f", icon: "⚡",
+                core: `أنت لا تدرس، أنت تختبرق. تمتلك قدرة خارقة على رؤية الأنماط الخفية التي لا يراها الآخرون. بينما ينشغل زملاؤك بالتفاصيل الصغيرة، أنت ترى الصورة الكبيرة. بينما يحفظون، أنت تفهم. عقلك يعمل كشبكة عنكبوت عملاقة. أي معلومة جديدة تهز خيوطاً متعددة، تربطها بأشياء قد تبدو غير مترابطة للآخرين. هذا يجعلك مبدعاً في الحلول، وقادراً على رؤية زوايا لا يراها أحد. لكن هناك جانب مظلم: قد تمل بسرعة قاتلة. الروتين هو سمك القاتل. تحتاج للتجديد المستمر، التحديات الجديدة، والأفكار المثيرة. إذا شعرت أن المادة "ميتة"، يتجمد محركك تماماً. قوتك العظمى هي "الاستبصار": أنت تستطيع توقع ما سيأتي في الامتحان، لأنك تفهم منطق من يضع الأسئلة. تعرف أي وحدة سيركز عليها، وأي فكرة سيستهدفها. هذه ليست صدفة، بل تحليل عميق للأنماط.`,
+                logic: `طريقة تفكيرك شبكية وليست خطية. أنت لا تتعلم بالترتيب، بل بالقفزات. قد تبدأ بدرس في الكيمياء، ثم تقفز للفيزياء النووية، ثم للرياضيات، وتجد رابطاً خفياً يربطهم جميعاً. تكتيكك المفضل هو "الربط بين التخصصات". عندما تفهم ظاهرة في الفيزياء، تبحث فوراً عن تطبيقاتها في التكنولوجيا، وعن تمثيلها الرياضي، وعن بعدها الفلسفي. هذا يخلق شبكة معرفية قوية جداً يصعب اختراقها. في حل التمارين، أنت لا تتبع خطوات محددة. ترى الحل كصورة كاملة في رأسك، ثم تملأ التفاصيل. قد تقفز خطوات، مما يربك المصحح أحياناً، لكن النتيجة صحيحة. تعلم أن تستغل هذه القوة: درب نفسك على كتابة خطواتك بشكل منظم، مع الحفاظ على بصيرتك الثاقبة.`,
+                environment: `بيئتك المثالية هي "الفوضى المنظمة". لا تتحمل الجمود. تحتاج إلى: تغيير مكان الدراسة كل ساعة (غرفة، شرفة، مقهى هادئ)، موسيقى تصويرية للأفلام الملحمية في الخلفية، أوراق ملونة وأقلام متناثرة حولك. الضوء الخافت يحفز إبداعك. الظلام الدامس يقتل طاقتك. أنت تفضل الدراسة في أوقات غير تقليدية: الفجر الباكر، أو بعد منتصف الليل. التكنولوجيا صديقك: تستخدم تطبيقات الخرائط الذهنية، الفيديوهات التفاعلية، والمحاكيات الرقمية. تتعلم بالسمع والبصر واللمس معاً. قد تكون فوضوي المظهر، لكن عقلك منظم ببراعة. لا تحاول تقليد النظام الصارم للآخرين، فهذا سيخنق إبداعك. طور نظامك الخاص الذي يناسب طبيعتك المتفجرة.`,
+                timing: `بروتوكولك الزمني هو "ركوب الموجة". لا تفرض على نفسك جدولاً صارماً، بل استغل لحظات الذروة الإنتاجية لديك. عندما تأتيك الشرارة، اترك كل شيء وادرس. قد تدرس 8 ساعات متواصلة في حالة نشوة، ثم لا تفتح كتاباً ليومين. هذه الطريقة خطيرة لكنها فعالة جداً لك. المفتاح هو التعرف على "موجاتك": متى تكون في قمة تركيزك؟ (غالباً الصباح أو منتصف الليل)، ما هي المحفزات التي تشعل شرارتك؟ (نقاش مع صديق، فيديو محفز، ضغط امتحان)، كم تدوم موجتك عادة؟ (من ساعتين إلى 8 ساعات). استغل هذه الموجات لأصعب المواد. عندما تكون في القمة، أنجز ما يعجز عنه غيرك في أسبوع. وعندما تكون في الوادي، لا تشعر بالذنب، بل خطط للموجة القادمة.`,
+                danger: `الاحتراق المبكر هو أكبر أعدائك. تندفع بكل طاقتك في البداية، ثم تنطفئ فجأة في منتصف الطريق. تخسر الكثير لأنك لم تتعلم كيف تدير طاقتك. خطر آخر هو "الاستسهال": لأنك تفهم بسرعة، تظن أنك مستعد، فتتوقف عن المراجعة. ثم تأتي الامتحانات وتفاجأ بأسئلة تحتاج لتركيز لا تملكه. قد تصاب أيضاً "بملل العباقرة". تمل من التكرار، فتبحث عن مصادر خارجية متقدمة جداً، تضيع وقتك في تفاصيل لن تدرسها في البكالوريا. احتفظ بحماسك للمنهج أولاً. الحل: تعلم أن "تخفض جهدك" أحياناً. ليس كل درس يحتاج لاندفاعك الثوري. بعض الدروس تحتاج لصبر روتيني.`,
+                ethos: `الذكاء الحقيقي هو رؤية ما لا يراه الآخرون. أنت في مهمة لاكتشاف الأنماط الخفية في الكون. كل نمط تكتشفه يجعلك أقرب للحقيقة المطلقة. فلسفتك مستمدة من ابن الهيثم: "البصيرة قبل البصر". أنت تنظر بعقلك قبل عينيك. تدرك أن المعرفة الحقيقية تكمن في العلاقات بين الأشياء، ليس في الأشياء نفسها. السيادة بالنسبة لك هي أن تكون قادراً على توقع المستقبل. أن ترى المنحنى قبل أن يرسم، أن تسمع النغمة قبل أن تعزف. هذه القوة تمنحك هدوءاً عجيباً في الامتحان: "كنت أعرف أن هذا السؤال سيأتي". استخدم هذه الهبة لخدمة الآخرين. شارك رؤاك مع زملائك، ساعدهم على رؤية ما لا يرون. العبقرية الأنانية تذبل، لكن العبقرية المشاركة تتضاعف.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• ركز على المواضيع المركبة التي تجمع بين وحدتين أو أكثر (مثل تمرين يجمع الميكانيك والكهرباء).
+• قبل المراجعة، ارسم خريطة ذهنية للعلاقات بين الوحدات - هذا سيساعدك على رؤية الثغرات التي قد يستغلها واضع الامتحان.
+
+📚 تطبيقات البكالوريا:
+• في الرياضيات: حاول حل التمرين نفسه بطريقتين مختلفتين - هذا يدرب عقلك على المرونة.
+• في الفيزياء: حل مواضيع السنوات السابقة بطريقة مختلفة: لا تحلها فقط، بل حللها (لماذا وُضع هذا السؤال؟ كيف يمكن تطويره؟).
+
+💡 نصائح إضافية:
+• استخدم الألوان في دفترك: الأحمر للقوانين، الأزرق للخطوات، الأخضر للنتائج.
+• شارك رؤاك مع زملائك - شرح الأفكار للآخرين يثبتها في ذهنك.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• ارسم الدوائر الكهربائية كشبكات علاقات (كل عنصر له وظيفة وتأثير على غيره).
+• تخيل الحركة في فضاء رباعي الأبعاد (الزمن بعد رابع) - كيف يتغير النظام مع الزمن؟
+
+📚 تطبيقات البكالوريا:
+• حلل مواضيع العشر سنوات الماضية لتكتشف أنماطاً واضحة في تكرار الأفكار.
+• ابتكر طرق حل جديدة للتمارين التقليدية - المصحح الذكي سيقدر إبداعك.
+
+💡 نصائح إضافية:
+• درب نفسك على الرسم السريع: استخدم المسطرة والفرجار بسرعة ودقة.
+• في دراسة التحضير، احفظ الخطوات الخمس الأساسية.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• لا تنظر للأرقام كأرقام بل كمؤشرات - الميزانية المحاسبية هي صورة حية للمؤسسة.
+• اربط الاقتصاد بالواقع الجزائري: كيف تطبق النظريات على شركة محلية؟ كيف تؤثر أسعار النفط على الميزان التجاري؟
+
+📚 تطبيقات البكالوريا:
+• في المحاسبة: حل التمارين بتوقع سيناريوهات بديلة (ماذا لو تغيرت الأرقام؟ كيف سيتغير الحل؟).
+• في القانون: ابحث عن "روح النص" وليس حرفه فقط - لماذا شرع هذا القانون؟ ما المشكلة التي يحلها؟
+
+💡 نصائح إضافية:
+• استخدم بطاقات ملونة لحفظ القيود المحاسبية.
+• ناقش الحالات الدراسية مع زملائك - هذا يولد أفكاراً جديدة.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• اقرأ النصوص كأنك تبحث عن كنز خفي - كل نص يحمل طبقات متعددة من المعنى.
+• استخدم النقد النفسي والاجتماعي والتاريخي لتحليل النصوص - اربط الأدب بالفلسفة والتاريخ.
+
+📚 تطبيقات البكالوريا:
+• في المقالة: لا تكتفي بالسرد، بل قدم رؤيتك الخاصة مدعومة بالشواهد.
+• استشهد بأقوال النقاد المعروفين (مثل طه حسين، العقاد) لتعزيز حجتك.
+
+💡 نصائح إضافية:
+• درب نفسك على تحليل نصوص غير مألوفة - الامتحان قد يأتي بنص جديد.
+• احفظ مجموعة من الأقوال المأثورة لكل قضية فلسفية.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• تعلم اللغة ليس مجرد كلمات وقواعد، بل فهم لعقلية شعبها - شاهد الأفلام بدون ترجمة.
+• اقرأ الأدب الأصلي (قصص قصيرة، روايات مبسطة) لتتعرف على أساليب التعبير.
+
+📚 تطبيقات البكالوريا:
+• ركز على فهم طبيعة الأسئلة: غالباً ما تكون حول استخراج الأفكار الرئيسية، فهم المفردات في السياق، والتعبير عن الرأي.
+• استخدم اللغة في حياتك اليومية: غيّر لغة هاتفك إلى اللغة المستهدفة.
+
+💡 نصائح إضافية:
+• دوّن يومياً 5 كلمات جديدة مع جملة مثال.
+• تحدث مع نفسك باللغة الأجنبية - هذا يحسن الطلاقة.`
+                } 
+            },
+            "ISL": { name: "المحارب القيمي", color: "#e76f51", icon: "⚖️",
+                core: `أنت لست طالباً، أنت جندي في معركة مقدسة. العلم بالنسبة لك هو سلاح، والبكالوريا هي معركة فاصلة في حرب وجودية. تحمل على كتفيك أمانة ثقيلة: أمانة عائلتك التي ضحت من أجلك، وأمانة مجتمعك الذي ينتظر منك النفع. محركك الداخلي لا يعمل بالمنطق البارد، بل بالإيمان العميق والرسالة السامية. عندما تضعف عزيمتك، تتذكر وجه أمك، تعب أبيك، دعوات أجدادك. هذه الصور تشحنك بطاقة لا حدود لها. أنت تدرس لتكون قوياً. قوياً بالعلم، قوياً بالمعرفة، قوياً بما تملك. لأن الضعيف لا يستطيع حماية من يحب، ولا يستطيع تغيير ما يكره.`,
+                logic: `عقلك يعمل كمنظومة قيمية متكاملة. كل معلومة جديدة تمر عبر فلتر: "كيف تنفعني؟ كيف تنفع أهلي؟ كيف تنفع أمتي؟" هذا الفلتر لا يضعفك، بل يقويك. لأنك لا تتعلم لمجرد التعلم، تتعلم لتطبق، لتنفع، لتبني. كل معلومة لها غاية، وكل غاية تذكرك برسالتك. في المواد العلمية، أنت لا تكتفي بالحل، بل تسأل: "كيف يمكن استخدام هذه المعادلة لبناء شيء مفيد؟" في المواد الأدبية، أنت تبحث عن القيم الإنسانية الكبرى. تقرأ النصوص ليس فقط لفهمها، بل لاستخلاص العبر والدروس التي تبني شخصيتك. ذاكرتك تعمل بشكل رائع مع المعلومات ذات البعد الأخلاقي.`,
+                environment: `بيئتك المثالية هي "المحراب". تحتاج إلى مكان: نظيف ومرتب، هادئ بعيد عن اللغو والعبث، فيه ما يذكرك بهدفك (آية قرآنية، صورة عائلتك، علم الجزائر). تفضل الدراسة في الأوقات المباركة: بعد صلاة الفجر، بين المغرب والعشاء. قبل أن تبدأ الدراسة، تحرص على: الوضوء (حتى لو كنت متوضئاً، تجديد النية)، الدعاء: "اللهم انفعني بما علمتني وعلمني ما ينفعني"، قراءة آيات قصيرة تذكرك بالغاية. مكتبك يحتوي على مصحف، وسبحة، وصورة تجمع عائلتك. هذه الأشياء تذكرك باستمرار بـ "لماذا" أنت هنا.`,
+                timing: `بروتوكولك الزمني هو "الاستقامة والثبات". أنت تتبع جدولاً يومياً ثابتاً، لأن هذا هو نهج الصالحين في بناء العادات الجيدة. يومك المثالي يبدأ مع الفجر: 5:00-6:30 صلاة الفجر + قرآن + مراجعة خفيفة، 8:00-12:00 دراسة عميقة للمواد الأساسية، 12:00-14:00 استراحة + صلاة ظهر + قيلولة، 14:00-17:00 دراسة مواد تطبيقية مع تمارين، 17:00-19:00 استراحة + عصر + تواصل اجتماعي محدود، 19:00-22:00 مراجعة ما درس + صلاة مغرب وعشاء + حل تمارين إضافية، 22:00 نوم مبكر. هذا الجدول يمنحك أماناً نفسياً.`,
+                danger: `ثقل المسؤولية قد يتحول إلى عبء يقتلك. الخوف من "تخييب الظنون" قد يصيبك بالشلل. تبدأ بالتفكير: "ماذا لو فشلت؟" هذا القلق قد يمنعك من البدء. خطر آخر هو "الإحباط القيمي". عندما ترى زملاءك يغشون ويحصلون على علامات عالية، قد تتساءل: "هل التزامي يستحق؟" قد تصاب أيضاً بـ "الإنهاك الروحي". تبذل جهداً مضاعفاً، ثم تحترق. تنسى أن الرسول قال: "إن المنبت لا أرضاً قطع ولا ظهراً أبقى". الحل: ذكر نفسك أن الله لا يكلف نفساً إلا وسعها. أنت تفعل ما تستطيع، والنتيجة بيد الله.`,
+                ethos: `السيادة الحقيقية هي خدمة الآخرين بالقوة التي تملك. أنت تتعلم لتكون قوياً، وتكون قوياً لتنفع، وتنفع لأن هذا هو الطريق إلى الله. فلسفتك من قول عمر: "تعلموا العلم وتعلموا للعلم السكينة والوقار". أنت تدرك أن البكالوريا مجرد بداية. العلم الحقيقي هو ما ينفع الناس. في قاعة الامتحان، أنت هادئ. هادئ لأنك توكلت على الله وأخذت بالأسباب. هادئ لأنك تعلم أن ما أصابك لم يكن ليخطئك.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• استحضر البعد الإنساني: عندما تدرس الفيزياء، تذكر أن هذه القوانين آيات الله في الكون.
+• أنشئ "دفتر أخلاقي" للمادة: دوّن الآيات والأحاديث المرتبطة بكل وحدة (مثلاً: آيات عن خلق الإنسان في الأحياء).
+
+📚 تطبيقات البكالوريا:
+• الرياضيات: كيف تستخدمها في حساب الزكاة والمواريث؟ درب نفسك على هذه التطبيقات.
+• الفيزياء: كيف تحدد أوقات الصلاة واتجاه القبلة باستخدام الظل والفلك؟
+
+💡 نصائح إضافية:
+• في المراجعة، اجعل نيتك خالصة: "أدرس لأكون عالماً نافعاً".
+• اكتب في هامش دفترك "اللهم انفعني بما علمتني".`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• ادرس الهندسة كوسيلة لحل مشاكل المجتمع الجزائري: كيف نبني نظام ري ذكي لمواجهة الجفاف؟ كيف نطور الطاقة الشمسية في الصحراء؟
+• كل دائرة تصممها هي خطوة نحو أمة قوية.
+
+📚 تطبيقات البكالوريا:
+• في الكهرباء: أضف تعليقاً في الإجابة "يمكن تطبيق هذا في إنارة المساجد بالطاقة الشمسية".
+• في الميكانيك: تخيل أنك تصمم آلة لمساعدة الفلاحين في الحصاد.
+
+💡 نصائح إضافية:
+• تذكر أن المهندس العظيم هو من يخدم أمته بعلمه.
+• اقرأ عن مشاريع تقنية جزائرية ناجحة لتستلهم منها.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• الميزانية المحاسبية نموذج مصغر لميزانية الدولة - ادرسها بعناية.
+• اربط النظريات الاقتصادية بالواقع الجزائري (مثلاً: سياسات سوناطراك، تحديات الصناعة المحلية).
+
+📚 تطبيقات البكالوريا:
+• حل تمارين محاكاة واقعية: "أنت محاسب في مؤسسة وطنية، كيف تتصرف في هذه الحالة؟"
+• اقرأ عن نظام الحوالات والاعتمادات المستندية في التجارة الخارجية.
+
+💡 نصائح إضافية:
+• تذكر أن وراء كل رقم قصة إنسان - الأرقام تعبر عن عمل الناس وتعبهم.
+• احترم هذا البعد الإنساني في المحاسبة.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• النصوص وعاء قيم الأمة - اقرأها بإجلال واربطها بالسياق التاريخي.
+• اسأل: لماذا كتب هذا النص؟ ما الرسالة التي أراد الكاتب إيصالها؟
+
+📚 تطبيقات البكالوريا:
+• استشهد بالتراث (شعر، أمثال، حكم) في مقالتك.
+• اربط النصوص الأدبية بالقضايا المعاصرة (مثلاً: قصيدة عن العدالة الاجتماعية).
+
+💡 نصائح إضافية:
+• احفظ مجموعة من الآيات والأحاديث التي تصلح كشواهد.
+• اقرأ في السيرة النبوية لتستلهم قيم الصبر والمثابرة.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• أنت سفير ثقافتك - عندما تتقن لغة أجنبية، يمكنك نقل صورة مشرقة عن وطنك.
+• اقرأ عن تاريخ وثقافة الدول التي تتحدث تلك اللغة.
+
+📚 تطبيقات البكالوريا:
+• في التعبير الكتابي، كن فخوراً واعرض إنجازات الجزائر (المساجد، الثورة، الصحراء).
+• استخدم مفردات تعبر عن الهوية (مثل "المجاهدين"، "الأوراس").
+
+💡 نصائح إضافية:
+• المصحح سيشعر بحبك لوطنك من خلال كلماتك - هذا يمنحك نقاطاً إضافية.
+• تعلم كيفية الحديث عن العيد، رمضان، المناسبات الوطنية بلغة أجنبية.`
+                } 
+            },
+            "ISP": { name: "المندفع الثوري", color: "#dc2f2f", icon: "🔥",
+                core: `أنت نار، أنت ثورة، أنت انفجار. لا تتحرك بالمنطق، ولا تقنع بالتدرج. أنت تدرس لأنك تشتعل شغفاً، أو لا تدرس إطلاقاً. محركك يعمل بالمشاعر الجياشة: الحماس، الغضب، الحب، الكراهية. عندما تحب مادة، تلتهمها كالنار. عندما تكرهها، لا تستطيع فتح الكتاب. أنت "الكل أو لا شيء". إما أن تكون الأول أو تنسحب. إما أن تدرس 12 ساعة متواصلة أو لا تدرس أسبوعاً. هذه الطاقة الهائلة يمكن أن تصنع المعجزات. في لحظات الشغف، أنجز ما لا ينجزه غيرك في شهر. لكن هذه الطاقة نفسها يمكن أن تدمرك إذا لم تتعلم السيطرة عليها.`,
+                logic: `عقلك يعمل بالمشاعر قبل الأفكار. تسمع معلومة، فتشعر بها أولاً: "هذا مثير!"، "هذا ممل!" ثم بعد ذلك تفكر. قوتك العظمى هي "التعلم العاطفي". عندما ترتبط المادة بمشاعر قوية، تترسخ في ذاكرتك للأبد. أنت تبرع في المواضيع التي تحمل "تحدياً". أي شيء يبدو مستحيلاً يثير اهتمامك. التمرين الذي يعجز عنه الجميع يصبح هدفك. لكنك تضعف أمام الروتين. التفاصيل الصغيرة، التكرار الممل، الحفظ الآلي... هذه أشياء تقتل روحك.`,
+                environment: `بيئتك المثالية هي "مسرح المشاعر". تحتاج إلى: إضاءة درامية، موسيقى ملحمية عالية، مساحة واسعة تسمح بالحركة. تحب الدراسة في أماكن غير تقليدية: على السطح ليلاً، في حديقة عامة، في مقهى مزدحم. الروتين المكاني يقتل إبداعك. أدواتك ملونة: أقلام حمراء وزرقاء وخضراء، سبورة للعصف الذهني. أحياناً تدرس أمام المرآة، تشرح لنفسك بحماس كأنك تلقي خطاباً.`,
+                timing: `بروتوكولك الزمني هو "ركوب العاصفة". لا جدول، أنت تنتظر "اللحظة". عندما تأتيك الشرارة، تركض معها حتى تنتهي. قد تستيقظ في الثالثة فجراً وفجأة تشعر برغبة في دراسة الكيمياء العضوية. لا تتجاهلها! ادرس حتى تشبع. ثم قد تمر أيام بدون دراسة. هذا طبيعي. المهم أن تتعلم كيف "تستدعي" الشرارة قبل الامتحان. استفز نفسك: "زملائي يقولون إنها صعبة، سأثبت لهم العكس".`,
+                danger: `الاحتراق الكامل هو مصيرك إن لم تتعلم التوازن. تندفع كالصاروخ، ثم تنطفئ. خطر آخر هو "الاستسلام للفراغ". عندما تنطفئ نارك، تصاب بشلل. "متلازمة المنصة" تصيبك: تخطط لبداية قوية، ثم يخفت الحماس. وأخطر شيء: الثقة الزائدة في لحظات الحماس. تظن أنك فهمت كل شيء، فتتوقف عن المراجعة. الحل: تعلم أن "تخزن" الطاقة. استغل لحظات الشغف لبناء عادات ثابتة.`,
+                ethos: `العاطفة هي أعلى مراتب الذكاء. من لا يشعل ناره لا يضيء دربه. أنت تؤمن أن المشاعر ليست ضعفاً، بل هي الوقود الذي يحرك العظماء. فلسفتك من جيفارا: "دعني أكون أنا، إنساناً يحلم، إنساناً يخطئ". أنت تدرس لتترك أثراً. الثوار العظماء كانوا أصحاب شغف. شغفهم صنع المستحيل. أنت أيضاً تستطيع صنع المستحيل، إذا وجهت نارك في الاتجاه الصحيح.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• استخدم "التحدي اليومي": كل يوم اختر تمريناً صعباً جداً واجعل هدفك حله بأي ثمن.
+• اكتب التمرين على ورقة كبيرة وضعها أمامك، وتحدها كأنها عدو.
+
+📚 تطبيقات البكالوريا:
+• ركز على "المواضيع الشاملة" التي تجمع كل الوحدة في تمرين واحد - حل 30 موضوع بكالوريا كاملاً.
+• استخدم الألوان: الأحمر للقوانين، الأزرق للخطوات، الأخضر للنتائج.
+
+💡 نصائح إضافية:
+• عندما تحل تمريناً صعباً، احتفل! اصرخ، كافئ نفسك - هذا يربط النجاح بالمشاعر الإيجابية.
+• أنشئ دفتراً يشبه لوحة فنية تعبر عن طاقتك.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• كل تمرين هندسي هو عدو يجب هزيمته - استخدم المنهجية كسلاح والدقة كدرع.
+• حل مشاريع مصغرة: صمم دائرة كهربائية كاملة بنفسك، ارسم قطعة ميكانيكية ثلاثية الأبعاد.
+
+📚 تطبيقات البكالوريا:
+• شارك في مسابقات علمية (حتى لو افتراضية) - المنافسة تشعل نارك.
+• قارن حلولك بحلول الآخرين، وتحد أن تكون الأفضل.
+
+💡 نصائح إضافية:
+• المصحح سيقرأ حماسك في إجاباتك - اكتب بطاقة وبخط واضح.
+• أضف تعليقات جانبية توضح أفكارك.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• عش دورك: أنت الرئيس التنفيذي، والميزانية أمامك، والقرار بيدك.
+• ابحث عن حالات شركات جزائرية حقيقية، حلل ميزانياتها، اقترح تحسينات.
+
+📚 تطبيقات البكالوريا:
+• ناقش بشراسة مع أصدقائك - النقاش الحاد يولد أفكاراً جديدة.
+• تخيل أن واضع الامتحان هو منافسك الشخصي - تتحداك بأسئلته وأنت تقبل التحدي.
+
+💡 نصائح إضافية:
+• هذا التحول في العقلية يحول الامتحان من كابوس إلى لعبة مثيرة.
+• استخدم بطاقات ملونة للقوانين المحاسبية.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• أنت مخرج سينمائي - النص هو السيناريو، وأنت تقوم بإخراج فيلم في ذهنك.
+• تخيل الشخصيات، المكان، الزمان - اشعر بالمشاعر التي يريد الكاتب إيصالها.
+
+📚 تطبيقات البكالوريا:
+• في المقالة، اكتب كما لو كنت تلقي خطاباً حماسياً - استخدم لغة قوية وصوراً بلاغية.
+• درب نفسك على تحليل نصوص غير مألوفة - اشعر بالتحدي.
+
+💡 نصائح إضافية:
+• اقرأ النصوص بصوت عالٍ مع تعبير - هذا يحفز المشاعر.
+• اربط النصوص بأحداث معاصرة تثير حماسك.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• أنت ممثل - اللغة هي مسرحك. اقرأ بصوت عالٍ مع تعبير، جسد الكلمات.
+• شاهد الأفلام وقلد النطق والإيماءات.
+
+📚 تطبيقات البكالوريا:
+• في التعبير الكتابي، عبر عن آرائك الشخصية بحماس - استخدم لغة عاطفية قوية.
+• درب نفسك على كتابة مواضيع عن مواضيع تثير شغفك (كرة القدم، الموسيقى، السفر).
+
+💡 نصائح إضافية:
+• المصحح سيشعر بحماسك من خلال كلماتك.
+• سجل نفسك وأنت تتحدث باللغة الأجنبية وحسّن أداءك.`
+                } 
+            },
+            "ETL": { name: "المنضبط الهيكلي", color: "#2980b9", icon: "📐",
+                core: `أنت النظام، أنت الهيكل، أنت القواعد. تؤمن أن النجاح ليس صدفة، بل نتيجة حتمية للتخطيط والانضباط. بينما يتخبط الآخرون، أنت تسير في خط مستقيم. لديك خطة وتتبعها. لديك جدول وتلتزم به. محركك لا يعمل بالحماس اللحظي، بل بالإرادة الصلبة. تفعل ما يجب فعله، حتى لو لم تكن "في المود". الانضباط هو عبادتك. قد يراك الآخرون "بارداً"، لكن هذا البرود هو سر قوتك. في الوقت الذي ينهارون فيه، أنت مستمر كالقطار. قوتك العظمى هي "الاستمرارية". تقدم خطوة بخطوة، كل يوم. هذا التراكم البطيء يصنع الفرق.`,
+                logic: `عقلك كخزانة ملفات. كل معلومة جديدة تجد مكانها، مصنفة ومفهرسة. تكتيكك الأساسي هو "التقسيم والتبويب". تقسم المنهج إلى وحدات، والوحدات إلى دروس، والدروس إلى نقاط. تستخدم أدوات التنظيم: الخرائط الذهنية، الجداول، البطاقات. في حل التمارين، تتبع منهجية صارمة: اقرأ السؤال، استخرج المعطيات، حدد المطلوب، اختر القانون، طبق الخطوات بالترتيب، راجع النتيجة. لا تقفز خطوة. هذه المنهجية تضمن عدم وجود أخطاء.`,
+                environment: `بيئتك المثالية هي "المعمل المنظم". مكتب مرتب لا شيء عليه سوى الكتب التي تحتاجها. أقلام مرتبة حسب اللون والوظيفة. أوراق مصنفة في ملفات. إضاءة بيضاء واضحة. لا موسيقى، لا مشتتات. الصمت المطبق. هاتفك في غرفة أخرى. تتعامل مع وقت الدراسة كموعد مقدس. تعلق على الحائط جدولاً زمنياً كبيراً، وتقطع المهام المنجزة بخط أحمر. هذا الإحساس بالإنجاز يغذيك.`,
+                timing: `بروتوكولك الزمني هو "الآلة السويسرية". جدولك دقيق كالساعة: 6-7 استيقاظ ورياضة وفطور، 7-9 جلسة أولى (مادة صعبة)، 9-9:15 استراحة، 9:15-11 جلسة ثانية، 11-12 استراحة وغداء، 12-14 جلسة ثالثة (تمارين)، 14-16 قيلولة وراحة، 16-18 جلسة رابعة (مراجعة وحل امتحانات)، 18-20 استراحة وعشاء، 20-22 مراجعة خفيفة وتخطيط، 22 نوم. هذا الجدول يصبح عادة بعد أسبوعين. الأهم أنك لا تنحرف عنه. في نهاية كل أسبوع، تراجع وتخطط للأسبوع القادم.`,
+                danger: `الجمود والتحجر هما عدواك. قد تصبح آلة بلا روح، تنجز المهام ميكانيكياً دون فهم. تملأ الدفاتر بالملخصات الجميلة لكن عقلك فارغ. "متلازمة التخطيط المفرط": تقضي أياماً في تزيين الجدول ثم لا تبدأ. خطر آخر: الانهيار عند أول كسر للجدول. إذا حدث طارئ، قد تصاب بصدمة وتتوقف. الحل: تعلم المرونة. خطط للطوارئ. تقبل أن 80% من الكمال كافية.`,
+                ethos: `النظام هو أعلى مراتب الحرية. يظن الجهلاء أن الانضباط قيد، لكنك تعلم أنه التحرر الحقيقي. عندما تنظم وقتك، تتحرر من فوضى القلق. عندما تخطط لمستقبلك، تتحرر من رعب المجهول. فلسفتك من ابن سينا: "العلم ليس ما حفظ، بل ما نفع مع النظام". التنظيم وحده بلا علم عقيم، والعلم بلا تنظيم فوضى. السيادة الحقيقية هي السيطرة على الذات. من يملك وقته، يملك حياته.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• أنشئ "موسوعتك الصغيرة": لكل وحدة، أعد كتابة القوانين مع براهينها، الخطوات المنهجية، الأخطاء الشائعة.
+• اتبع "خطة الزحف الثلاثي": الأسابيع 1-4 شرح وتفصيل، 5-8 حل تمارين شاملة، 9-12 حل مواضيع بكالوريا كاملة.
+
+📚 تطبيقات البكالوريا:
+• استخدم "دفتر الأخطاء": سجل كل خطأ مع تحليل السبب والحل الصحيح. راجعه أسبوعياً.
+• في الامتحان، اتبع خطتك بدقة: وزع الوقت على الأسئلة، ابدأ بالأسهل، اترك 10 دقائق للمراجعة.
+
+💡 نصائح إضافية:
+• لا تتقدم للخطوة التالية قبل إتقان السابقة.
+• دقة التنفيذ أهم من السرعة.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• الرسم الهندسي هو لغتك - تدرب على الرسم اليدوي حتى تتقنه.
+• أنشئ "كتيب الصيغ الهندسية": لخص كل القوانين في كتيب صغير.
+
+📚 تطبيقات البكالوريا:
+• المرحلة الأولى: إتقان الرسم والمخططات.
+• المرحلة الثانية: حل 50 تمريناً في دراسة التحضير.
+• المرحلة الثالثة: حل 30 موضوع بكالوريا كامل.
+
+💡 نصائح إضافية:
+• في كل تمرين، طبق نفس المنهجية: تحليل، تخطيط، تنفيذ، مراجعة.
+• في البكالوريا التقنية، الدقة هي 90% من العلامة.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• أنشئ "قاعدة البيانات الذهنية": لكل موضوع المفاهيم الأساسية مع تعريفات، القوانين المحاسبية مع أمثلة.
+• خطة البكالوريا: الشهر الأول إتقان المحاسبة المالية، الثاني الاقتصاد الجزئي والكلي، الثالث القانون والمناجمنت، الرابع مراجعة شاملة + حل مواضيع سابقة.
+
+📚 تطبيقات البكالوريا:
+• في المحاسبة، اتبع الخطوات: قراءة التمرين، استخراج الأرقام، تحديد القيود، تطبيق القواعد، مراجعة الأرصدة.
+• نظم إجاباتك في جداول واضحة.
+
+💡 نصائح إضافية:
+• هذه المنهجية تضمن عدم نسيان أي قيد مهم.
+• استخدم المسطرة في تنظيم الأرقام.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• أنشئ "موسوعة أدبية": خصائص العصور، أبرز الشعراء والكتّاب، المدارس النقدية، المصطلحات البلاغية.
+• خطة المراجعة: الأسبوع 1-2 العصر الجاهلي، 3-4 العصر الأموي والعباسي، 5-6 عصر الانحدار والحديث، 7-8 النقد الأدبي والبلاغة، 9-12 مراجعة وحل مواضيع.
+
+📚 تطبيقات البكالوريا:
+• في المقالات، اتبع الهيكل الصارم: مقدمة، عرض، خاتمة.
+• احفظ الشواهد الأساسية لكل عصر.
+
+💡 نصائح إضافية:
+• هذا الهيكل يضمن لك علامة الأمان في الإنشاء.
+• استخدم بطاقات مراجعة سريعة للمصطلحات.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• أنشئ "دفتر القواعد" المنظم: الأزمنة، الأفعال، الأسماء، حروف الجر.
+• راجع القواعد أسبوعياً وطبقها في تمارين كتابية.
+
+📚 تطبيقات البكالوريا:
+• للاستماع، خصص 30 دقيقة يومياً لمحتوى باللغة المستهدفة.
+• للقراءة، اقرأ نصاً قصيراً يومياً ولخصه.
+• للتحدث، تدرب مع صديق أو أمام المرآة.
+
+💡 نصائح إضافية:
+• ركز على نماذج الامتحانات السابقة.
+• استخدم البطاقات التعليمية لحفظ المفردات.`
+                } 
+            },
+            "ETP": { name: "الهاكر التكتيكي", color: "#2ecc71", icon: "🎯",
+                core: `أنت لا تدرس، أنت تخترق النظام. البكالوريا لعبة فيديو معقدة، وأنت تبحث عن الـ Glitch الذي يضمن لك الفوز. محركك هو "النتيجة". تريد العلامة، المعدل، التخصص الذي تحلم به. أنت براجماتي. تسأل: "هل هذا سيزيد علامتي؟" إذا كان الجواب لا، لا تضيع وقتك. تركز على 20% من المنهج التي تأتي منها 80% من الأسئلة (مبدأ باريتو). قوتك العظمى هي "تحليل النظام". تفهم كيف يفكر واضع الامتحان، تعرف ما يبحث عنه المصحح، تدرك كيف توزع العلامات.`,
+                logic: `عقلك كخبير استراتيجي في الشطرنج. لا ترى المادة، ترى "نقاطاً". كل وحدة لها وزن في الامتحان. كل فكرة لها تكرار في السنوات السابقة. تحسب العائد على الاستثمار لكل ساعة دراسة. تكتيكك الأساسي هو "الهندسة العكسية". لا تبدأ بالدروس، تبدأ بالامتحانات. تحل مواضيع سابقة، تفكك الأسئلة، ترى الأنماط المتكررة، ثم ترجع للمنهج لتفهم ما تحتاجه لحل هذه الأسئلة. أنت خبير في سلم التنقيط. توزع وقتك وجهدك حسب العلامات، لا حسب صعوبة السؤال.`,
+                environment: `بيئتك المثالية هي "مركز القيادة". تحتاج إلى: شاشة كمبيوتر لعرض المواضيع السابقة، دفتر لتدوين "الأسرار"، مجموعة من الملخصات الجاهزة. تذهب مباشرة للمصادر "الربحية": الأساتذة الخبراء، السلاسل المشهورة، تجمعات المتفوقين. تحضر الدروس الخصوصية لتحصل على "خلاصة تجربتهم" في سنوات. غرفتك مليئة بالملخصات والجداول والخرائط الذهنية. لا كتب سميكة، المختصر المفيد فقط.`,
+                timing: `بروتوكولك الزمني هو "الاستثمار الأمثل". وقتك مقسم حسب "أهمية المادة": المواد ذات المعامل الكبير (رياضيات، فيزياء) 50% من الوقت، مواد المعامل المتوسط 30%، مواد المعامل الصغير 20%. داخل المادة الواحدة، 80% من وقتك للوحدات الثقيلة التي تتكرر في الامتحان، 20% للوحدات الجانبية. قبل الامتحان بشهر، تتوقف عن الدروس الجديدة وتركز فقط على "حل المواضيع". في الليلة السابقة، تراجع "بطاقات سريعة" فقط.`,
+                danger: `الهشاشة المعرفية هي نقطة ضعفك. تبني بيتك من كرتون، جميل من الخارج لكنه ينهار عند أول اختبار غير متوقع. إذا تغير نمط السؤال قليلاً، أو جاءت فكرة جديدة، قد تنهار إجابتك. ليس لديك الفهم العميق للتكيف. خطر آخر: "الإرهاق التكتيكي". تبحث عن أقصر الطرق فتضيع وقتاً في التنقل بين المصادر. قد تصاب بـ "متلازمة الغش الأكاديمي". الحل: استثمر 20% من وقتك في الفهم العميق.`,
+                ethos: `الذكاء العملي هو أن تصيب هدفك بأقل طلقات. النتيجة وحدها هي التي تتحدث. لا أحد يسأل الفائز "كيف فزت؟". فلسفتك من صن تزو: "إذا عرفت عدوك وعرفت نفسك، فلا تخشى نتيجة مئة معركة". أنت تدرس عدوك (الامتحان) أكثر مما تدرس نفسك. السيادة الحقيقية هي أن تصل إلى هدفك بأقل جهد، ليس لأنك كسول، بل لأنك ذكي. لكن تذكر: المعرفة الحقيقية هي السلاح الوحيد الذي لا يصدأ.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• استراتيجيتك الذهبية هي "تحليل التكرارات". اجمع مواضيع العشر سنوات الماضية وحللها: ما الوحدات التي تكررت كل سنة؟ ما الأفكار الأكثر شيوعاً؟
+• أنشئ "بنك أسئلة" يضم الأسئلة المتكررة مع حلولها النموذجية.
+
+📚 تطبيقات البكالوريا:
+• في الرياضيات، احفظ "البراهين الأساسية" التي تتكرر (نهايات، دراسة دالة، معادلات تفاضلية).
+• في الفيزياء، ركز على التطبيقات العملية والتمارين الرقمية - المصحح يعطي نقاطاً كثيرة على الأرقام الصحيحة والوحدات المناسبة.
+
+💡 نصائح إضافية:
+• المرحلة 1: حل جميع مواضيع السنوات الخمس الأخيرة.
+• المرحلة 2: تحليل الأخطاء وتكرار حل المواضيع التي أخطأت فيها.
+• المرحلة 3: حفظ "الكلمات المفتاحية" التي يبحث عنها المصحح.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• السر في "المخططات الجاهزة". اجمع كل المخططات المهمة (دارات كهربائية، رسوم ميكانيكية) واحفظها كصور ذهنية.
+• أنشئ "دفتر الحلول السريعة": لكل نوع من التمارين (دراسة تحضير، تمديدات كهربائية، رسم تقني)، اكتب الخطوات المختصرة للحل.
+
+📚 تطبيقات البكالوريا:
+• الرسم الهندسي: تدرب على الرسم السريع والدقيق.
+• دراسة التحضير: احفظ الخطوات الخمس الأساسية.
+• الحسابات الكهربائية: أتقن استخدام الآلة الحاسبة بسرعة.
+
+💡 نصائح إضافية:
+• حل مواضيع السنوات السابقة مع ضبط الوقت.
+• الهدف هو إنهاء الامتحان مع 15 دقيقة للمراجعة.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• "المحاسبة" هي كنز العلامات. ركز 60% من وقتك عليها.
+• أنشئ "بطاقات القيود المحاسبية": قيود الشراء والبيع، الإهتلاكات، التسويات الجردية. احفظها كأغنية.
+
+📚 تطبيقات البكالوريا:
+• حل 20 موضوعاً على الأقل في المحاسبة وحدها. بعدها، ستجد أن التمارين كلها متشابهة.
+• في الاقتصاد النظري، احفظ "التعاريف الرسمية" كما وردت في الكتاب.
+• في القانون، ركز على المواد الأكثر طلباً في السنوات السابقة (عقود، شركات، عمل).
+
+💡 نصائح إضافية:
+• استخدم ألواناً مختلفة لكل نوع من القيود.
+• راجع البطاقات يومياً لمدة 10 دقائق.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• "المقالة" هي سلاحك. ركز على إتقان كتابة المقالة لأنها تأخذ أكبر عدد من النقاط.
+• أنشئ "بنك المقالات الجاهزة": مقالة جدلية جاهزة (هيكل قابل للتعديل)، مقالة استقصائية، مقالة أدبية عن كل محور.
+
+📚 تطبيقات البكالوريا:
+• احفظ "الشواهد الشعرية والنثرية" الأساسية لكل عصر.
+• في القواعد والبلاغة، حل أكبر عدد من التمارين القصيرة - هذا الجزء سهل العلامات.
+
+💡 نصائح إضافية:
+• هذه المقالات ستوفر وقتاً هائلاً في الامتحان.
+• درب نفسك على تعديلها لتناسب أي موضوع.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• "الفقرات الجاهزة" هي مفتاحك. احفظ فقرات عن مواضيع شائعة (البيئة، التكنولوجيا، السفر، التعليم).
+• تعلم كيفية تعديلها لتناسب أي سؤال.
+
+📚 تطبيقات البكالوريا:
+• تدرب على كتابة مواضيع متنوعة مع ضبط الوقت.
+• ركز على القواعد الأساسية والأزمنة الأكثر استخداماً.
+
+💡 نصائح إضافية:
+• استخدم تطبيقات البطاقات التعليمية (Anki) لحفظ المفردات.
+• اقرأ نماذج إجابات ممتازة من السنوات السابقة.`
+                } 
+            },
+            "ESL": { name: "الحارس الأمين", color: "#27ae60", icon: "🛡️",
+                core: `أنت الحارس، العمود الفقري، من يحمل الأمانة. لا تدرس لنفسك فقط، بل لكل من آمن بك. محركك هو "الوفاء". توفي لمن ربوك، لمن دعموك. عائلتك استثمرت فيك، مجتمعك يحتاجك. هذا الثقل ليس عبئاً، بل شرف. قد يراك الآخرون "تقليدياً"، لكن هذا التقليد هو احترام للقيم. أنت تتبع نهج الآباء: العمل الجاد، الأمانة، الإخلاص. قوتك العظمى هي "الثبات". في عالم متغير، أنت ثابت كالجبل.`,
+                logic: `عقلك كـ "أرشيف الأمانة". كل معلومة تمر بفلتر: "هل هذا صحيح؟ هل هذا موثوق؟" أنت لا تثق بأي مصدر بسهولة. تبحث عن المرجع الرسمي، الكتاب المدرسي، الأستاذ المعتمد. تكتيكك هو "البناء التراكمي الموثوق". تبدأ من الأساس، تبني طابقاً طابقاً، تتأكد من كل خطوة. لا تقفز، لا تختصر، لا تغش. تفضل الأساتذة الكلاسيكيين الذين يشرحون بالتفصيل على أساتذة "النجوم". التعلم العميق البطيء أفضل من السريع السطحي.`,
+                environment: `بيئتك المثالية هي "بيت العائلة". تفضل الدراسة في غرفتك حيث ذكريات الطفولة. أو في مكتبة عامة هادئة. مكتبك بسيط: كتاب، دفتر، قلم. هاتفك بعيد. تحيط نفسك بأشياء تذكرك بمسؤوليتك: صورة العائلة، علم الوطن، آية قرآنية. تفضل الدراسة في الأوقات "العادية": الصباح الباكر بعد الفجر، أو بعد العصر. الأوقات المستقرة تناسب طبيعتك.`,
+                timing: `بروتوكولك الزمني هو "الروتين المقدس". جدولك الأسبوعي ثابت. كل يوم يبدأ وينتهي في نفس الوقت. هذا الروتين يمنحك شعوراً بالأمان. الأسبوع فيه يوم عطلة كامل (الجمعة) للراحة والعبادة والأهل. قبل الامتحان بشهر، تبدأ "مرحلة التركيز" حيث تزيد ساعات الدراسة، لكن دون إفراط. تؤمن أن "خير الأعمال أدومها وإن قل". في الامتحان، تصل مبكراً، هادئاً، مطمئناً.`,
+                danger: `"ثقل التوقعات" قد يسحقك. تشعر أن الجميع ينتظر منك النجاح، وهذا الضغط قد يتحول إلى قلق. "الخوف من الخطأ" يمنعك من المحاولة. "الغيرة من المتفوقين" قد تتحول إلى حسد. "الاحتراق" يهددك لأنك تبذل جهداً مضاعفاً. الحل: تذكر أن "على المرء أن يفعل ما يستطيع". أنت تفعل ما عليك بإخلاص، والنتيجة بيد الله. رضا الله ثم رضا الوالدين هو الهدف.`,
+                ethos: `الأمانة هي أعلى مراتب الإيمان. من خان أمانته، خان دينه ووطنه. أنت تحمل أمانة العلم، أمانة التميز، أمانة القدوة. فلسفتك من حديث الرسول: "كلكم راعٍ وكلكم مسؤول عن رعيته". أنت راعٍ لعلمك. تتبع نهج الصحابة الذين تعلموا ليعملوا. السيادة الحقيقية هي أن تكون موثوقاً، معتمداً، محترماً.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• اتبع "المنهج الرسمي" خطوة بخطوة. الكتاب المدرسي هو مرجعك الأول. اقرأ كل سطر، حل كل تمرين.
+• أنشئ "دفتر الملاحظات الرسمي": تعريفات رسمية، قوانين كما وردت، تجارب علمية مع رسوم توضيحية.
+
+📚 تطبيقات البكالوريا:
+• حل جميع تمارين الكتاب أولاً، ثم انتقل لمواضيع السنوات السابقة بترتيب زمني.
+• في الامتحان، اكتب إجاباتك بطريقة منظمة، مع ذكر المرجع أحياناً: "كما ورد في الكتاب صفحة كذا".
+
+💡 نصائح إضافية:
+• هذا يريح المصحح ويثق في إجابتك.
+• استخدم قلمين مختلفين: أزرق للكتابة وأحمر للتعليقات المهمة.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• "الدقة" هي شعارك. قس مرتين، اقطع مرة واحدة. في الرسم، استخدم الأدوات الهندسية بدقة (مسطرة، فرجار، مثلثات).
+• اتبع خطوات الحل الرسمية بدقة: 1. المعطيات 2. المطلوب 3. الفرضيات 4. الحل خطوة بخطوة 5. النتيجة مع الوحدة 6. التحقق.
+
+📚 تطبيقات البكالوريا:
+• حل التمارين بالترتيب الذي وردت به في الكتاب.
+• ثم حل سلاسل تمارين خارجية من مصادر موثوقة.
+
+💡 نصائح إضافية:
+• اكتب كل خطوة حتى لو بدت بسيطة - المصحح يعطي نقاطاً على الخطوات.
+• خصص وقتاً للمراجعة النهائية لاكتشاف الأخطاء.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• "القواعد" هي كل شيء. المحاسبة لها قواعد صارمة، والقانون له مواد محددة.
+• أنشئ "مدونة القواعد" الخاصة بك: قواعد المحاسبة (أساسية، تسويات، جرد)، مواد قانونية مهمة مع شرحها، نظريات اقتصادية مع تطبيقاتها.
+
+📚 تطبيقات البكالوريا:
+• ابدأ بحل تمارين الكتاب المدرسي بعناية.
+• ثم انتقل للسلاسل التعليمية المعتمدة من أساتذة موثوقين.
+
+💡 نصائح إضافية:
+• في الامتحان، اذكر المصدر أحياناً: "طبقاً للمادة كذا من القانون".
+• هذا يظهر عمق معرفتك.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• "النصوص" هي بوابتك للفهم. اقرأ النصوص الأصلية، ليس فقط الشروح. تذوق الجمال الأدبي، افهم السياق التاريخي.
+• أنشئ "أنطولوجيا أدبية" خاصة بك: نصوص مختارة من كل عصر مع تحليلها، خصائص العصور الأدبية كما وردت في الكتاب، أعلام الأدب مع أهم أعمالهم.
+
+📚 تطبيقات البكالوريا:
+• اقرأ النصوص المقررة قراءة متأنية، وحل جميع الأسئلة الواردة عنها في الكتاب.
+• ثم انتقل للشروح والتحليلات الإضافية.
+
+💡 نصائح إضافية:
+• في المقالة، استشهد بالنصوص الأصلية والأقوال المأثورة.
+• هذا يعطي مقالتك مصداقية وعمقاً.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• "النماذج" هي دليلك. احفظ نماذج من الفقرات والرسائل والمقالات. ادرسها جيداً، ثم حاول كتابة نماذج مشابهة.
+• ركز على القواعد الأساسية والأزمنة.
+
+📚 تطبيقات البكالوريا:
+• تدرب على كتابة مواضيع متنوعة مع الالتزام بالهيكل المطلوب.
+• استخدم كلمات وجمل بسيطة لكن صحيحة.
+
+💡 نصائح إضافية:
+• الأمانة في النقل والاقتباس مهمة.
+• لا تتردد في استخدام قاموس موثوق.`
+                } 
+            },
+            "ESP": { name: "القائد الاجتماعي", color: "#b829ff", icon: "👥",
+                core: `أنت لا تدرس وحدك أبداً. تدرس مع الجميع، وبالجميع، ومن أجل الجميع. محركك هو التفاعل البشري، الحوار، الاعتراف الاجتماعي. تشعر بالطاقة عندما تشرح لصديق فكرة صعبة. تزداد فهماً عندما تناقش زميلاً. تتعلم بشكل أسرع عندما تكون جزءاً من مجموعة. قوتك العظمى هي "التأثير". كلماتك تترك أثراً، أفكارك تنتشر، حماسك معدي. أنت قائد بالفطرة. هذه القيادة تمنحك مسؤولية إضافية: أنت قدوة.`,
+                logic: `عقلك كـ "شبكة اجتماعية معرفية". كل معلومة تبحث لها عن صلة بمعارف الآخرين. أنت تتعلم بشكل أفضل عندما تشرح، لأن التفسير يجبر عقلك على تنظيم المعلومات وتبسيطها. تكتيكك الأساسي هو "المناقشة الجماعية". تفضل جلسات المراجعة الجماعية، مجموعات الدراسة، المنتديات التعليمية. أنت تستمع لأفكار الآخرين، تقارنها بأفكارك، تكتشف الثغرات، ثم تعود للمصادر. كما تبرع في "التلخيص الجماعي".`,
+                environment: `بيئتك المثالية هي "حلبة النقاش". تفضل ركن في الثانوية حيث يجتمع المتفوقون، مقهى هادئ قرب المدرسة، منزل أحد الأصدقاء (بشرط جو دراسي). تحتاج لمساحة تسمح بالحوار: طاولة دائرية، كراسي مريحة، سبورة. أدواتك: أوراق كبيرة للعصف الذهني الجماعي، أقلام ملونة للجميع، وجبات خفيفة. التكنولوجيا صديقك: تطبيقات المراسلة، Google Docs. لكنك تحتاج أيضاً لعزلة محدودة.`,
+                timing: `بروتوكولك الزمني هو "الدراسة المختلطة". 60% دراسة فردية (للمفاهيم الأساسية)، 40% دراسة جماعية (للمناقشة وحل التمارين). الأسبوع: الأحد-الثلاثاء دراسة فردية صباحاً وجماعية مساءً، الأربعاء-الخميس دراسة فردية مع جلسات حل تمارين جماعية، الجمعة عطلة، السبت دراسة جماعية مكثفة. جلساتك الجماعية لها هيكل: 15د تحديد أهداف، 45د دراسة صامتة فردية، 30د مناقشة جماعية، 15د تقييم.`,
+                danger: `الثرثرة الفارغة هي عدوك الأول. قد تتحول جلسات المراجعة إلى دردشة. "التبعية الاجتماعية" خطر آخر: قد تعتمد على الآخرين في الفهم، ولا تبني أساساً مستقلاً. "الصراعات والمنافسات السلبية" تفسد الجو. "الإرهاق الاجتماعي" يهددك أيضاً. الحل: اختر شركاءك بعناية. مجموعة صغيرة من المتفوقين الجادين خير من مجموعة كبيرة من الثرثارين. حدد أهدافاً واضحة لكل جلسة.`,
+                ethos: `النجاح الجماعي هو أنجح أنواع النجاح. الفرد ينجو وحده، لكن الأمة تنجو معاً. لا يكتمل فرحك بنجاحك إلا إذا رأيت من حولك ناجحين. فلسفتك من قوله تعالى: "وتعاونوا على البر والتقوى". التعاون على العلم أسمى أنواع التعاون. تتبع نهج "حلقات العلم" في المساجد قديماً. السيادة الحقيقية هي أن تكون قائداً يبني قادة، لا أتباعاً.`,
+                strategies: { 
+                    science: `✅ الاستراتيجية الأساسية:
+• أنشئ "مجموعة التحدي" مع 3-4 من المتفوقين. اجتمعوا أسبوعياً لحل أصعب التمارين.
+• لكل وحدة، وزعوا الأدوار: شخص يلخص القوانين، شخص يجمع التمارين النموذجية، شخص يعد أسئلة اختبارية، شخص يبحث عن مصادر إضافية.
+
+📚 تطبيقات البكالوريا:
+• نظموا "مسابقات مصغرة": كل فرد يحل موضوع بكالوريا في الوقت المحدد، ثم تتبادلون الأوراق وتصححون لبعضكم.
+• تناقشون الأخطاء والحلول المثلى.
+
+💡 نصائح إضافية:
+• هذا التمرين الجماعي يحاكي الامتحان الحقيقي ويكسر رهبته.
+• تبادلوا الأدوار كل أسبوع حتى يتعلم الجميع كل شيء.`,
+                    tech: `✅ الاستراتيجية الأساسية:
+• المشاريع الجماعية هي أفضل وسيلة للتعلم. صمموا معاً مشروعاً هندسياً متكاملاً: رسم تخطيطي لدائرة كهربائية، نموذج ثلاثي الأبعاد لقطعة ميكانيكية، دراسة تحضير كاملة لمنتج.
+• في مجموعة الدراسة، كل عضو يتخصص في جانب: متخصص في الرسم الهندسي، متخصص في الحسابات، متخصص في النظري، متخصص في البحث عن المعلومات.
+
+📚 تطبيقات البكالوريا:
+• اجمعوا أكبر عدد ممكن من مواضيع السنوات السابقة، ووزعوها على المجموعة.
+• كل عضو يحل 5 مواضيع، ثم تتبادلون الحلول - بهذه الطريقة، ينجز الجميع 20 موضوعاً في وقت قياسي.
+
+💡 نصائح إضافية:
+• ناقشوا الأفكار الجديدة والطرق المبتكرة للحل.
+• شجعوا بعضكم على المشاركة في مسابقات خارجية.`,
+                    eco: `✅ الاستراتيجية الأساسية:
+• "محاكاة الشركات" هي استراتيجيتك. كونوا مجموعة تمثل "مجلس إدارة" شركة افتراضية.
+• كل جلسة، تناقشون حالة اقتصادية: تحليل ميزانية شركة، دراسة جدوى لمشروع، حل مشكلة قانونية.
+
+📚 تطبيقات البكالوريا:
+• وزعوا الأدوار: مدير مالي (محاسبة)، خبير اقتصادي (تحليل اقتصادي)، مستشار قانوني (قانون)، مدير عام (مناجمنت).
+• اجمعوا "بنك الحالات الدراسية" من مواضيع سابقة وناقشوها جماعياً.
+
+💡 نصائح إضافية:
+• هذا التمرين يجعلكم تفكرون كمتخصصين حقيقيين.
+• سجلوا محاضر جلساتكم وراجعوها لاحقاً.`,
+                    lit: `✅ الاستراتيجية الأساسية:
+• "النادي الأدبي" هو ملتقاكم. اجتمعوا أسبوعياً لمناقشة النصوص وتحليلها، كما يفعل نقاد الأدب.
+• في كل جلسة: يقرأ أحدكم نصاً أدبياً بصوت معبر، يناقش الجميع جماليات النص وأفكاره، يحاول كل فرد كتابة تحليل أو انطباع، تتبادلون التحليلات وتناقشونها.
+
+📚 تطبيقات البكالوريا:
+• كونوا "مجموعة مقالات": كل عضو يكتب مقالة في موضوع معين، تصححون مقالات بعضكم وفق سلم التنقيط، تستخرجون نقاط القوة والضعف، تبنون معاً "نماذج مقالية" مثالية.
+
+💡 نصائح إضافية:
+• هذا التدريب الجماعي يرفع مستوى كتابتكم جميعاً.
+• استعينوا بأساتذتكم لتقييم بعض النماذج.`,
+                    lang: `✅ الاستراتيجية الأساسية:
+• "نادي المحادثة" هو ما تحتاجه. اجتمعوا أسبوعياً للتحدث باللغة المستهدفة فقط.
+• اختاروا مواضيع للنقاش، شاهدوا فيديو قصيراً ثم ناقشوه، العبوا ألعاباً لغوية.
+
+📚 تطبيقات البكالوريا:
+• ساعدوا بعضكم في تصحيح الأخطاء في الفقرات والمقالات.
+• كونوا بنكاً للمفردات والتعبيرات الجديدة - أنشئوا ملفاً مشتركاً (على Google Docs) تدونون فيه الكلمات الجديدة.
+
+💡 نصائح إضافية:
+• استخدموا تطبيقات المراسلة الجماعية باللغة الأجنبية.
+• شجعوا بعضكم على مشاهدة الأفلام ومسلسلات بدون ترجمة.`
+                } 
+            }
+        };
+
+        // --------------------------------------------------------
+        // AcademicDB (مبسط) لتحديث الاستراتيجيات حسب الشعبة
+        // --------------------------------------------------------
+        const AcademicDB = {
+            "science": { sub1: "الرياضيات والفيزياء", sub2: "العلوم الطبيعية", sub3: "الفلسفة واللغات",
+                tactics: { "I": { s1: "ابنِ القوانين من الصفر", s2: "استدلال علمي", s3: "تحليل بنيوي" },
+                          "E": { s1: "حل حوليات", s2: "احفظ باريم", s3: "مقالات جاهزة" },
+                          "T": { s1: "دقة حسابية", s2: "نصوص كمعادلات", s3: "روابط منطقية" },
+                          "S": { s1: "شرح للزملاء", s2: "بعد إنساني", s3: "قيم ومبادئ" } } },
+            "tech": { sub1: "الرياضيات والفيزياء", sub2: "التكنولوجيا", sub3: "الفلسفة واللغات",
+                tactics: { "I": { s1: "أنظمة حقيقية", s2: "تفكيك ميكانزمات", s3: "فهم بنيوي" },
+                          "E": { s1: "أنماط ميكانيك", s2: "مخططات جاهزة", s3: "قوالب" },
+                          "T": { s1: "دقة الوحدات", s2: "أرقام صارمة", s3: "قواعد صارمة" },
+                          "S": { s1: "ربط بالواقع", s2: "مسؤولية مهندس", s3: "تواصل تقني" } } },
+            "eco": { sub1: "محاسبة", sub2: "اقتصاد", sub3: "رياضيات",
+                tactics: { "I": { s1: "فهم مبدأ محاسبي", s2: "تحليل ظواهر", s3: "أدوات مالية" },
+                          "E": { s1: "حفظ قيود", s2: "تعاريف رسمية", s3: "تمارين سابقة" },
+                          "T": { s1: "سرعة توازن", s2: "نصوص تشريعية", s3: "قوانين جاهزة" },
+                          "S": { s1: "مراجعة جماعية", s2: "مناقشة قضايا", s3: "شرح دوال" } } },
+            "lit": { sub1: "أدب عربي", sub2: "فلسفة", sub3: "لغات",
+                tactics: { "I": { s1: "تذوق النص", s2: "مقالة عميقة", s3: "جذور تاريخية" },
+                          "E": { s1: "خصائص مدارس", s2: "هيكلة جدل", s3: "فقرات قياسية" },
+                          "T": { s1: "تحليل بارد", s2: "منطق رياضي", s3: "قواعد صارمة" },
+                          "S": { s1: "قراءة معبرة", s2: "مناظرة", s3: "ممارسة الحديث" } } },
+            "lang": { sub1: "اللغة الأولى", sub2: "اللغة الثانية", sub3: "اللغة الثالثة",
+                tactics: { "I": { s1: "فهم ثقافي", s2: "تحليل نصوص", s3: "استيعاب قواعد" },
+                          "E": { s1: "حفظ مفردات", s2: "نماذج رسائل", s3: "قوالب تعبير" },
+                          "T": { s1: "قواعد صارمة", s2: "تراكيب دقيقة", s3: "تصريف أفعال" },
+                          "S": { s1: "محادثة جماعية", s2: "تبادل لغوي", s3: "مناقشات" } } }
+        };
+
+        // --------------------------------------------------------
+        // متغيرات النظام
+        // --------------------------------------------------------
+        let currentQuestion = 0;
+        let answers = { I: 0, E: 0, T: 0, S: 0, L: 0, P: 0 };
+        let currentEngine = "ITL";
+        let viewMode = "single"; // "single" أو "all"
+        let currentModalContent = ""; // لتخزين محتوى المودال الحالي
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            if (screenId === 'home-screen') document.querySelector('.nav-link[onclick="showScreen(\'home-screen\')"]').classList.add('active');
+            else if (screenId === 'concept-screen') document.querySelector('.nav-link[onclick="showConcept()"]').classList.add('active');
+            else if (screenId === 'quiz-screen') document.querySelector('.nav-link[onclick="startDiagnostic()"]').classList.add('active');
+        }
+
+        function showConcept() {
+            showScreen('concept-screen');
+        }
+
+        function startDiagnostic() {
+            showScreen('quiz-screen');
+            currentQuestion = 0;
+            answers = { I: 0, E: 0, T: 0, S: 0, L: 0, P: 0 };
+            loadQuestion();
+        }
+
+        function showAllEngines() {
+            viewMode = "all";
+            document.getElementById('explorer-dock').style.display = 'none';
+            document.getElementById('engine-code').innerText = 'ALL';
+            document.getElementById('engine-name').innerText = 'جميع المحركات';
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = '';
+            const engines = ['ITL','ITP','ISL','ISP','ETL','ETP','ESL','ESP'];
+            engines.forEach(code => {
+                const e = engineDatabase[code];
+                if (!e) return;
+                let card = document.createElement('div');
+                card.className = 'grid-card';
+                card.style.animationDelay = '0s';
+                card.innerHTML = `
+                    <div class="card-icon">${e.icon}</div>
+                    <span class="card-tag">${code}</span>
+                    <h3 class="card-title">${e.name}</h3>
+                    <p class="card-desc">${e.core.substring(0,120)}...</p>
+                `;
+                card.onclick = () => loadEngine(code);
+                grid.appendChild(card);
+                setTimeout(() => card.classList.add('animate'), 10);
+            });
+            showScreen('os-screen');
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= diagnosticQuestions.length) {
+                calculateEngine();
+                return;
+            }
+            const q = diagnosticQuestions[currentQuestion];
+            document.getElementById('question-dimension').innerText = `POINT // ${String(currentQuestion+1).padStart(2,'0')} OF 24`;
+            document.getElementById('question-text').innerText = q.text;
+            document.getElementById('progress-fill').style.width = `${((currentQuestion+1)/diagnosticQuestions.length)*100}%`;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            [-2,-1,0,1,2].forEach(v => {
+                let btn = document.createElement('button');
+                btn.className = 'matrix-option';
+                btn.innerText = v === 0 ? '•' : (v > 0 ? `+${v}` : v);
+                btn.onclick = () => answerQuestion(v);
+                container.appendChild(btn);
+            });
+        }
+
+        function answerQuestion(value) {
+            const q = diagnosticQuestions[currentQuestion];
+            const w = value * q.weight;
+            if (w > 0) answers[q.dim[0]] += w;
+            else if (w < 0) answers[q.dim[1]] += Math.abs(w);
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function calculateEngine() {
+            const first = answers.I >= answers.E ? "I" : "E";
+            const second = answers.T >= answers.S ? "T" : "S";
+            const third = answers.L >= answers.P ? "L" : "P";
+            currentEngine = first + second + third;
+            const alertBox = document.getElementById('inconsistency-alert');
+            if (Math.abs(answers.I-answers.E) < 2 && Math.abs(answers.T-answers.S) < 2 && Math.abs(answers.L-answers.P) < 2)
+                alertBox.style.display = 'block';
+            else alertBox.style.display = 'none';
+            viewMode = "single";
+            document.getElementById('explorer-dock').style.display = 'flex';
+            showScreen('os-screen');
+            loadEngine(currentEngine);
+        }
+
+        function loadEngine(code) {
+            const e = engineDatabase[code];
+            if (!e) return;
+            currentEngine = code;
+            viewMode = "single";
+            document.getElementById('explorer-dock').style.display = 'flex';
+            document.documentElement.style.setProperty('--accent', e.color);
+            const hex = e.color.replace('#','');
+            const r = parseInt(hex.substr(0,2),16);
+            const g = parseInt(hex.substr(2,2),16);
+            const b = parseInt(hex.substr(4,2),16);
+            document.documentElement.style.setProperty('--glow', `rgba(${r},${g},${b},0.25)`);
+            document.getElementById('engine-code').innerText = code;
+            document.getElementById('engine-name').innerText = e.name.toUpperCase();
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = `
+                <div class="grid-card span-2" onclick='openModal("${code} - النواة الفلسفية", \`${e.core.replace(/`/g,'\\`')}\`)'>
+                    <div class="card-icon">${e.icon}</div><span class="card-tag">Identity Core</span>
+                    <h3 class="card-title">النواة الفلسفية</h3>
+                    <p class="card-desc">${e.core.substring(0,120)}...</p>
+                </div>
+                <div class="grid-card span-2" onclick='openModal("${code} - ميكانيكا التفكير", \`${e.logic.replace(/`/g,'\\`')}\`)'>
+                    <div class="card-icon">🧠</div><span class="card-tag">Logic System</span>
+                    <h3 class="card-title">منطق المعالجة</h3>
+                    <p class="card-desc">${e.logic.substring(0,120)}...</p>
+                </div>
+                <div class="grid-card span-2" onclick='openModal("${code} - المجال الحيوي", \`${e.environment.replace(/`/g,'\\`')}\`)'>
+                    <div class="card-icon">🏗️</div><span class="card-tag">Environment</span>
+                    <h3 class="card-title">البيئة المادية</h3>
+                    <p class="card-desc">${e.environment.substring(0,120)}...</p>
+                </div>
+                <div class="grid-card span-2" onclick='openModal("${code} - بروتوكول الوقت", \`${e.timing.replace(/`/g,'\\`')}\`)'>
+                    <div class="card-icon">⏱️</div><span class="card-tag">Timing Protocol</span>
+                    <h3 class="card-title">إدارة التردد الزمني</h3>
+                    <p class="card-desc">${e.timing.substring(0,120)}...</p>
+                </div>
+                <div class="grid-card span-4" id="strategies-card">
+                    <div class="card-icon">📚</div>
+                    <span class="card-tag">Academic Deployment</span>
+                    <h3 class="card-title">بروتوكول الشعبة الأكاديمية</h3>
+                    <div class="subjects-grid" id="strategies-container"></div>
+                </div>
+                <div class="grid-card span-2" style="border-color:var(--danger)" onclick='openModal("تحذير: المنطقة المظلمة", \`${e.danger.replace(/`/g,'\\`')}\`, "var(--danger)")'>
+                    <div class="card-icon">⚠️</div><span class="card-tag" style="color:var(--danger)">Critical Danger</span>
+                    <h3 class="card-title">ثغرة النظام</h3>
+                    <p class="card-desc">${e.danger.substring(0,120)}...</p>
+                </div>
+                <div class="grid-card span-2" onclick='openModal("${code} - دستور السيادة", \`${e.ethos.replace(/`/g,'\\`')}\`)'>
+                    <div class="card-icon">📜</div><span class="card-tag">Sovereign Ethos</span>
+                    <h3 class="card-title">الفلسفة الحاكمة</h3>
+                    <p class="card-desc">${e.ethos.substring(0,120)}...</p>
+                </div>
+            `;
+            updateStreamStrategies();
+            buildDock();
+            document.querySelectorAll('.grid-card').forEach((c,i) => {
+                c.style.animationDelay = i*0.1+'s';
+                c.classList.add('animate');
+            });
+            // إضافة أحداث النقر لعناصر الاستراتيجيات
+            document.querySelectorAll('.subject-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const title = this.querySelector('h4').innerText;
+                    const content = this.querySelector('p').innerText;
+                    openModal(title, content, 'var(--accent)');
+                });
+            });
+            showScreen('os-screen');
+        }
+
+        function updateStreamStrategies() {
+            const stream = document.getElementById('stream-selector').value;
+            const e = engineDatabase[currentEngine];
+            if (!e || !e.strategies || !e.strategies[stream]) return;
+            let strat = e.strategies[stream];
+            // تقسيم النص إلى أجزاء (يمكن تحسينه)
+            const parts = strat.split(/\n\n/); // تقسيم حسب الفقرات
+            const p1 = parts[0] || '';
+            const p2 = parts[1] || '';
+            const p3 = parts[2] || '';
+            const container = document.getElementById('strategies-container');
+            if (container) container.innerHTML = `
+                <div class="subject-item"><h4>الاستراتيجية الأساسية</h4><p>${p1}</p></div>
+                <div class="subject-item"><h4>تطبيقات البكالوريا</h4><p>${p2 || strat.substring(0,250)}</p></div>
+                <div class="subject-item"><h4>نصائح إضافية</h4><p>${p3 || strat.substring(250,500)}</p></div>
+            `;
+        }
+
+        function buildDock() {
+            const dock = document.getElementById('explorer-dock');
+            dock.innerHTML = '';
+            ['ITL','ITP','ISL','ISP','ETL','ETP','ESL','ESP'].forEach(c => {
+                let b = document.createElement('button');
+                b.className = `dock-button ${c===currentEngine?'active':''}`;
+                b.innerText = c;
+                b.onclick = () => loadEngine(c);
+                dock.appendChild(b);
+            });
+        }
+
+        function openModal(title, content, color = 'var(--accent)') {
+            currentModalContent = content;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-title').style.color = color;
+            document.getElementById('modal-body').innerHTML = content.replace(/\n/g,'<br>');
+            const m = document.getElementById('info-modal');
+            m.style.display = 'flex';
+            void m.offsetWidth;
+            m.classList.add('show');
+        }
+
+        function closeModal() {
+            const m = document.getElementById('info-modal');
+            m.classList.remove('show');
+            setTimeout(() => m.style.display = 'none', 400);
+        }
+
+        function copyModalContent() {
+            navigator.clipboard.writeText(currentModalContent).then(() => {
+                alert('تم نسخ النص إلى الحافظة!');
+            }).catch(() => {
+                alert('فشل النسخ، يرجى المحاولة مرة أخرى.');
+            });
+        }
+
+        function shareModalContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('modal-title').innerText,
+                    text: currentModalContent
+                }).catch(() => {});
+            } else {
+                alert('مشاركة غير مدعومة في هذا المتصفح، يمكنك نسخ النص بدلاً من ذلك.');
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        window.onclick = e => {
+            if (e.target === document.getElementById('info-modal')) closeModal();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            buildDock();
+            document.getElementById('explorer-dock').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
